@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Question } from '../../models/Question'
 import { useAuthentication } from '../../hooks/authentication'
 import Layout from '../../components/Layout'
+import Link from 'next/link'
 import dayjs from 'dayjs'
 import {
   collection,
@@ -110,14 +111,16 @@ export default function QuestionsReceived() {
       <div className="row justify-content-center">
         <div className="col-12 col-md-6" ref={scrollContainerRef}>
           {questions.map((question) => (
-            <div className="card my-3" key={question.id}>
-              <div className="card-body">
-                <div className="text-truncate">{question.body}</div>
-                <div className="text-muted text-end">
-                  <small>{dayjs(question.createdAt.toDate()).format('YYYY/MM/DD HH:mm')}</small>
+            <Link href={`/questions/${question.id}`} key={question.id}>
+                <div className="card my-3" key={question.id}>
+                  <div className="card-body">
+                    <div className="text-truncate">{question.body}</div>
+                    <div className="text-muted text-end">
+                      <small>{dayjs(question.createdAt.toDate()).format('YYYY/MM/DD HH:mm')}</small>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
