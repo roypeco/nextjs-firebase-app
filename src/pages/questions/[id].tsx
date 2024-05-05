@@ -30,6 +30,7 @@ export default function QuestionsShow() {
   const [answer, setAnswer] = useState<Answer>(null)
   const [isSending, setIsSending] = useState<boolean>(false)
   const [body, setBody] = useState<string>("")
+  
 
   function getCollections() {
     const db = getFirestore()
@@ -105,8 +106,11 @@ export default function QuestionsShow() {
   }
 
   useEffect(() => {
+    if (user === null) {
+        return
+    }
     loadData()
-  }, [routerQuery.id])
+  }, [routerQuery.id, user])
 
   return (
     <Layout>

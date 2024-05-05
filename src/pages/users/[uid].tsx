@@ -75,12 +75,15 @@ export default function UserShow() {
 
   return (
     <Layout>
-        {user && (
+        {user && currentUser &&(
             <div className="text-center">
                 <h1 className="h4">{user.name}さんのページ</h1>
                 <div className="m-5">{user.name}さんに質問しよう！</div>
                 <div className="row justify-content-center mb-3">
                 <div className="col-12 col-md-6">
+                {user.uid === currentUser.uid ? (
+                    <div>自分には送信できません。</div>
+                ) : (
                     <form onSubmit={onSubmit}>
                     <textarea
                         className="form-control"
@@ -102,6 +105,7 @@ export default function UserShow() {
                         )}
                     </div>
                     </form>
+                )}
                 </div>
                 </div>
             </div>
