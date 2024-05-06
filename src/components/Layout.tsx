@@ -1,6 +1,7 @@
+import { ReactNode } from 'react';
 import { ToastContainer } from 'react-toastify'
 
-export default function Layout({ children }) {
+export default function Layout({ children }: { children: ReactNode }) {
     return (
       <div>
         <nav
