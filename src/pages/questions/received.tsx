@@ -21,16 +21,19 @@ export default function QuestionsReceived() {
   const [questions, setQuestions] = useState<Question[]>([])
   const { user } = useAuthentication()
   const [isPaginationFinished, setIsPaginationFinished] = useState(false)
-  const scrollContainerRef = useRef(null)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   function createBaseQuery() {
     const db = getFirestore()
+    if (user) {
     return query(
       collection(db, 'questions'),
       where('receiverUid', '==', user.uid),
       orderBy('createdAt', 'desc'),
       limit(10)
-    )
+    )} else {
+      return null
+    }
   }
   
   function appendQuestions(snapshot: QuerySnapshot<DocumentData>) {
@@ -43,7 +46,13 @@ export default function QuestionsReceived() {
   }
   
   async function loadQuestions() {
-    const snapshot = await getDocs(createBaseQuery())
+    const query = createBaseQuery();
+    if (!query) {
+        // エラーハンドリング
+        console.error("Query is undefined");
+        return;
+    }
+    const snapshot = await getDocs(query)
   
     if (snapshot.empty) {
       setIsPaginationFinished(true)
@@ -58,8 +67,12 @@ export default function QuestionsReceived() {
     }
   
     const lastQuestion = questions[questions.length - 1]
+    const q = createBaseQuery()
+    if (!q) {
+      return
+    }
     const snapshot = await getDocs(
-      query(createBaseQuery(), startAfter(lastQuestion.createdAt))
+      query(q, startAfter(lastQuestion.createdAt))
     )
   
     if (snapshot.empty) {
@@ -75,7 +88,7 @@ export default function QuestionsReceived() {
     }
     
     const container = scrollContainerRef.current
-    if (container === null) {
+    if (!container) {
       return
     }
     

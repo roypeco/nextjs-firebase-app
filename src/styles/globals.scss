@@ -1,8 +1,8 @@
 @import '~bootstrap/scss/bootstrap';
 @import '~react-toastify/dist/ReactToastify.css';
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwind/base';
+@import 'tailwind/components';
+@import 'tailwind/utilities';
 
 :root {
   --foreground-rgb: 0, 0, 0;

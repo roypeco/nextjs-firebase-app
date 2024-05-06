@@ -48,26 +48,28 @@ export default function QuestionsShow() {
     const { db, questionsCollection, answersCollection } = getCollections()
     const answerRef = doc(answersCollection)
   
-    await runTransaction(db, async (t) => {
-      t.set(answerRef, {
+    if (user && question) {
+        await runTransaction(db, async (t) => {
+        t.set(answerRef, {
+            uid: user.uid,
+            questionId: question.id,
+            body,
+            createdAt: serverTimestamp(),
+        })
+        t.update(doc(questionsCollection, question.id), {
+            isReplied: true,
+        })
+    })}
+
+    const now = new Date().getTime()
+    if (user && question) {
+        setAnswer({
+        id: '',
         uid: user.uid,
         questionId: question.id,
         body,
-        createdAt: serverTimestamp(),
-      })
-      t.update(doc(questionsCollection, question.id), {
-        isReplied: true,
-      })
-    })
-
-    const now = new Date().getTime()
-    setAnswer({
-    id: '',
-    uid: user.uid,
-    questionId: question.id,
-    body,
-    createdAt: new Timestamp(now / 1000, now % 1000),
-    })
+        createdAt: new Timestamp(now / 1000, now % 1000),
+    })}
   }
 
   async function loadData() {

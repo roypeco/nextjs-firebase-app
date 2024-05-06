@@ -32,24 +32,25 @@ export default function UserShow() {
       const db = getFirestore()
   
       setIsSending(true)
-      await addDoc(collection(db, 'questions'), {
-          senderUid: currentUser.uid,
-          receiverUid: user.uid,
-          body,
-          isReplied: false,
-          createdAt: serverTimestamp(),
-      })
-      setIsSending(false)
-      setBody('')
-      toast.success('質問を送信しました。', {
-        position: 'bottom-left',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      })
+      if (currentUser && user) {
+        await addDoc(collection(db, 'questions'), {
+            senderUid: currentUser.uid,
+            receiverUid: user.uid,
+            body,
+            isReplied: false,
+            createdAt: serverTimestamp(),
+        })
+        setIsSending(false)
+        setBody('')
+        toast.success('質問を送信しました。', {
+            position: 'bottom-left',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+      })}
   }
   
   useEffect(() => {
