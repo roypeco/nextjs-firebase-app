@@ -26,8 +26,8 @@ export default function QuestionsShow() {
   const router = useRouter()
   const routerQuery = router.query as Query
   const { user } = useAuthentication()
-  const [question, setQuestion] = useState<Question>(null)
-  const [answer, setAnswer] = useState<Answer>(null)
+  const [question, setQuestion] = useState<Question | null>(null)
+  const [answer, setAnswer] = useState<Answer | null>(null)
   const [isSending, setIsSending] = useState<boolean>(false)
   const [body, setBody] = useState<string>("")
   
